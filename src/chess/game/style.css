@@ -1,0 +1,17 @@
+.undecorator-background {
+  -fx-fill: radial-gradient(focus-angle 45deg, focus-distance 20%, center 25% 25%, radius 50%, reflect, #eeeeee88, #55555588 75%, dimgray);
+  -fx-arc-width:25;
+  -fx-arc-height:25;
+}
+#menuitem{
+        -fx-effect: dropshadow(gaussian, grey, 100 , 0, 0, 0);
+        -fx-background-insets: 100;
+        -fx-background-color: #aac4ed;
+        -fx-cursor: hand;
+}
+#menuitem:hover{
+        -fx-effect: dropshadow(gaussian, blue, 100 , 0, 0, 0);
+        -fx-background-insets: 100;
+        -fx-background-color: #6b9be5;
+        -fx-cursor: hand;
+}
