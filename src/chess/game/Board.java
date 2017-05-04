@@ -5,7 +5,6 @@
  */
 package chess.game;
 
-import chess.game.AI.Checker;
 import chess.game.Controllers.Bishop;
 import chess.game.Controllers.BlackPawn;
 import chess.game.Controllers.King;
@@ -13,20 +12,17 @@ import chess.game.Controllers.Knight;
 import chess.game.Controllers.Queen;
 import chess.game.Controllers.Rook;
 import chess.game.Controllers.WhitePawn;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import static chess.game.ref.*;
+import static chess.game.Modes.*;
+import javafx.scene.input.MouseEvent;
 
 /**
  *
@@ -77,51 +73,19 @@ public class Board extends GridPane {
             for (int j = 0; j < 8; j++) {
                 int x = i;
                 int y = j;
-                ref.cells[i][j].setOnMouseClicked(e -> {
+                cells[i][j].setOnMouseClicked(e -> {
                     if (e.getButton() == MouseButton.SECONDARY) {
-                        if (popUpStage == null) {
-                            popUpStage = new Stage();
-                            popUpStage.initStyle(StageStyle.TRANSPARENT);
-
-                            Button close = new Button("Close");
-                            Button minimize = new Button("Minimize");
-                            close.setPrefSize(100, 25);
-                            close.setOnAction(ex -> {
-                                System.out.println("system exits!");
-                                popUpStage.close();
-                                popUpStage = null;
-                                System.exit(0);
-                            });
-
-                            minimize.setPrefSize(100, 25);
-                            minimize.setOnAction(ex -> {
-                                ChessGame.primaryStage.setIconified(true);
-                                popUpStage.close();
-                                popUpStage = null;
-                            });
-
-                            close.setId("menuitem");
-                            minimize.setId("menuitem");
-
-                            VBox pane = new VBox();
-                            pane.getChildren().addAll(close, minimize);
-                            Scene scene = new Scene(pane, 100, 50);
-                            popUpStage.setScene(scene);
-                            scene.setFill(Color.TRANSPARENT);
-                            popUpStage.setX(e.getScreenX());
-                            popUpStage.setY(e.getScreenY());
-                            popUpStage.show();
-                        } else if (popUpStage != null) {
-
-                            popUpStage.close();
-                            popUpStage = null;
-                        }
+                        showPopUp(e);
                     } else {
                         if (popUpStage != null) {
                             popUpStage.close();
                             popUpStage = null;
                         }
-                        mouseClicked(x, y);
+                        if (mode == 1) {
+                            mouseClickedOnMode1(x, y);
+                        } else {
+                            mouseClickedOnMode2(x, y);
+                        }
                     }
                 });
             }
@@ -130,7 +94,105 @@ public class Board extends GridPane {
 
     }
 
-    public void mouseClicked(int x, int y) {
+    public void mouseClickedOnMode1(int x, int y) {
+        whitepawn = new WhitePawn();
+        knight = new Knight();
+        bishop = new Bishop();
+        rook = new Rook();
+        queen = new Queen();
+        king = new King();
+        blackpawn = new BlackPawn();
+
+        //if cell has no image & has no action holder above it
+        if (cells[x][y].getImage() == null && (cells[x][y].getFill() == cadeTblue || cells[x][y].getFill() == antiqueWhite)) {
+            //do nothing with it for now!
+            //do this to all pieces cells with images
+            setCellsBackgroundDefaults();
+        } //if cell threatened to be killed
+        else if (cells[x][y].getFill() == killing) {
+
+            //if piece is threatened by another one
+            cells[x][y].setNullImage();                     //throw away it's image
+            cells[x][y].getChildren().remove(1);            //remove image object from the cell pane
+            cells[x][y].setImage(PressedCell.getImage());   //set the killer image on the cell pane
+
+            PressedCell.setNullImage();                                           //throw away the image
+            cells[PressedCell.getX()][PressedCell.getY()].getChildren().remove(1);//remove image object from the cell pane
+
+            //do this to all pieces cells with images
+            setCellsBackgroundDefaults();
+        } //if cell is hovered & available for movement
+        else if (cells[x][y].getFill() == hover && cells[x][y].getImage() == null) {
+            //if cell is hovered for movement
+            cells[x][y].setImage(PressedCell.getImage());
+            PressedCell.setNullImage();
+            cells[PressedCell.getX()][PressedCell.getY()].getChildren().remove(1);
+            //do this to all pieces cells with images
+            setCellsBackgroundDefaults();
+        } //if white side chatacter is pressed
+        else {
+            //here user can only press on white pieces to move them
+            //if the piece was a whitepawn
+            if (cells[x][y].getImage().contains("wpawn")) {
+                //do this to all pieces cells with images
+                setCellsBackgroundDefaults();
+                cells[x][y].setBackgroundColor();
+                System.out.println("whitepawn");
+                whitepawn.setWay(x, y);
+            } //if the piece was whiterook
+            else if (cells[x][y].getImage().contains("wrook")) {
+                //do this to all pieces cells with images
+                setCellsBackgroundDefaults();
+                cells[x][y].setBackgroundColor();
+                System.out.println("whiterook");
+                rook.setWay(x, y);
+            } //if the piece was whiteknight
+            else if (cells[x][y].getImage().contains("wknight")) {
+                //do this to all pieces cells with images
+                setCellsBackgroundDefaults();
+                cells[x][y].setBackgroundColor();
+                System.out.println("whiteknight");
+                knight.setWay(x, y);
+            } //if the piece was whitebishop
+            else if (cells[x][y].getImage().contains("wbishop")) {
+                //do this to all pieces cells with images
+                setCellsBackgroundDefaults();
+                cells[x][y].setBackgroundColor();
+                System.out.println("whitebishop");
+                bishop.setWay(x, y);
+            } //if the piece was whitequeen
+            else if (cells[x][y].getImage().contains("wqueen")) {
+                //do this to all pieces cells with images
+                setCellsBackgroundDefaults();
+                cells[x][y].setBackgroundColor();
+                System.out.println("whitequeen");
+                queen.setWay(x, y);
+            } //if the piece was whiteking
+            else if (cells[x][y].getImage().contains("wking")) {
+                //do this to all pieces cells with images
+                setCellsBackgroundDefaults();
+                cells[x][y].setBackgroundColor();
+                System.out.println("whiteking");
+                king.setWay(x, y);
+            }
+            PressedCell = cells[x][y];
+        }
+
+        //AI movement right after the user plays
+        //here U can use or completely manipulate Checker & OtherSide classes & access the pieces classes from here
+        //the pieces classes are complete in 2 players mode
+        //but not yet in 1 player mode
+        //so this is your task 
+        //the classes u'll be working in
+        //In Package Controllers
+        //work on method moveOnMode1 in all pieces classes
+        //also in package AI u are allowed to do as you will
+        //& alse don't forget to put the AI portion here in the Board class
+        //good luck ;)
+
+    }
+
+    public void mouseClickedOnMode2(int x, int y) {
         System.out.println("(i , j) ==> " + x + " , " + y);
         whitepawn = new WhitePawn();
         knight = new Knight();
@@ -139,40 +201,12 @@ public class Board extends GridPane {
         queen = new Queen();
         king = new King();
         blackpawn = new BlackPawn();
-//        if(!PLAYER_ROLE){
-//            Checker c = new Checker();
-//        }else{
+
         //if cell has no image & has no action holder above it
         if (cells[x][y].getImage() == null && (cells[x][y].getFill() == cadeTblue || cells[x][y].getFill() == antiqueWhite)) {
             //do nothing with it for now!
             //do this to all pieces cells with images
             setCellsBackgroundDefaults();
-        }//if cell threatened dynamically "only with pawn"
-        else if (cells[x][y].getFill() == dynamic) {
-            //if dynamic cell on enemy piece left
-            if (y - 1 >= 0) {
-                cells[x][y-1].setNullImage();                     //throw away it's image
-                cells[x][y-1].getChildren().remove(1);            //remove image object from the cell pane
-                cells[x][y].setImage(PressedCell.getImage());   //set the killer image on the cell pane
-
-                PressedCell.setNullImage();                                           //throw away the image
-                cells[PressedCell.getX()][PressedCell.getY()].getChildren().remove(1);//remove image object from the cell pane
-
-                //do this to all pieces cells with images
-                setCellsBackgroundDefaults();
-            }
-            //if dynamic cell on enemy piece right
-            if(y + 1 <= 7){
-                cells[x][y+1].setNullImage();                     //throw away it's image
-                cells[x][y+1].getChildren().remove(1);            //remove image object from the cell pane
-                cells[x][y].setImage(PressedCell.getImage());   //set the killer image on the cell pane
-
-                PressedCell.setNullImage();                                           //throw away the image
-                cells[PressedCell.getX()][PressedCell.getY()].getChildren().remove(1);//remove image object from the cell pane
-
-                //do this to all pieces cells with images
-                setCellsBackgroundDefaults();
-            }
         } //if cell threatened to be killed
         else if (cells[x][y].getFill() == killing) {
 
@@ -288,6 +322,46 @@ public class Board extends GridPane {
                     }
                 }
             }
+        }
+    }
+
+    public void showPopUp(MouseEvent e) {
+        if (popUpStage == null) {
+            popUpStage = new Stage();
+            popUpStage.initStyle(StageStyle.TRANSPARENT);
+
+            Button close = new Button("Close");
+            Button minimize = new Button("Minimize");
+            close.setPrefSize(100, 25);
+            close.setOnAction(ex -> {
+                System.out.println("system exits!");
+                popUpStage.close();
+                popUpStage = null;
+                System.exit(0);
+            });
+
+            minimize.setPrefSize(100, 25);
+            minimize.setOnAction(ex -> {
+                ChessGame.primaryStage.setIconified(true);
+                popUpStage.close();
+                popUpStage = null;
+            });
+
+            close.setId("menuitem");
+            minimize.setId("menuitem");
+
+            VBox pane = new VBox();
+            pane.getChildren().addAll(close, minimize);
+            Scene scene = new Scene(pane, 100, 50);
+            popUpStage.setScene(scene);
+            scene.setFill(Color.TRANSPARENT);
+            popUpStage.setX(e.getScreenX());
+            popUpStage.setY(e.getScreenY());
+            popUpStage.show();
+        } else if (popUpStage != null) {
+
+            popUpStage.close();
+            popUpStage = null;
         }
     }
 

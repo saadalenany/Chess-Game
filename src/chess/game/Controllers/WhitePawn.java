@@ -25,14 +25,6 @@ public class WhitePawn implements Piece {
                 } else {
                     System.out.println("There is an image here!");
                 }
-            } else if (ref.cells[x - 1][y].getImage().contains("black")) {
-                ref.cells[x - 1][y].setFill(ref.killing);
-                if (y - 1 >= 0) {
-                    ref.cells[x - 1][y - 1].setFill(ref.dynamic);
-                }
-                if (y + 1 <= 7) {
-                    ref.cells[x - 1][y + 1].setFill(ref.dynamic);
-                }
             } else {
                 System.out.println("There is an image here!");
             }
@@ -56,14 +48,6 @@ public class WhitePawn implements Piece {
         } else if (x < 6 && x > 0) {
             if (ref.cells[x - 1][y].getImage() == null) {
                 ref.cells[x - 1][y].setFill(ref.hover);
-            } else if (ref.cells[x - 1][y].getImage().contains("black")) {
-                ref.cells[x - 1][y].setFill(ref.killing);
-                if (y - 1 >= 0) {
-                    ref.cells[x - 1][y - 1].setFill(ref.dynamic);
-                }
-                if (y + 1 <= 7) {
-                    ref.cells[x - 1][y + 1].setFill(ref.dynamic);
-                }
             } else {
                 System.out.println("There is an image here!");
             }
