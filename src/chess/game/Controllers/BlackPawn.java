@@ -15,24 +15,12 @@ import java.util.ArrayList;
  */
 public class BlackPawn implements Piece {
 
-    //arrayList of available moves for Black Pawn
-    ArrayList<String> Pawnavailable = new ArrayList<>();
-
     //note that the String size will always be 3 if the place in Black Pawn's range & no one else's ,format like this "1,2" means piece is hovered
     //in special case if the place in Black Pawn's range is also in the range of any whiteside piece the String size will be 4 ,format like this "1,2="
 
     @Override
     public void setWay(int x, int y) {
-        if (mode == 1) {
-            moveOnMode1(x, y);
-        } else {
-            moveOnMode2(x, y);
-        }
-    }
-
-    //code for 1 player
-    public void moveOnMode1(int x, int y) {
-
+        moveOnMode2(x, y);
     }
 
     //code for 2 players
@@ -50,7 +38,7 @@ public class BlackPawn implements Piece {
                 System.out.println("There is an image here!");
             }
 
-            if (x - 1 >= 0 && x + 1 <= 7) {
+            if (x - 1 >= 0 && x + 1 <= 7 && y-1 >= 0 && y+1 <= 7 ) {
                 if (ref.cells[x + 1][y - 1].getImage() == null) {
                     System.out.println("yellow not here!");
                 } else if (ref.cells[x + 1][y - 1].getImage().contains("yellow")) {

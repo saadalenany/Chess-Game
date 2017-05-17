@@ -43,4 +43,12 @@ public class ref {
     //array 2D of cells
     public static Cell[][] cells;
 
+    public static int NUMBER_OF_PAWNS = 8;
+
+    public static int NUMBER_OF_ROOKS = 2;
+
+    public static int NUMBER_OF_BISHOPS = 2;
+
+    public static int NUMBER_OF_KNIGHTS = 2;
+
 }

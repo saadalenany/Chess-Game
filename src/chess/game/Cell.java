@@ -1,18 +1,10 @@
 package chess.game;
 
-import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.ImageViewBuilder;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.Paint;
-import javafx.scene.paint.RadialGradient;
-import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -21,10 +13,12 @@ import javafx.scene.shape.Rectangle;
  */
 public class Cell extends StackPane {
 
-    Rectangle rect;
+    private Rectangle rect;
     Paint fill;
     String image;
+    private char bcase;
     int x, y;
+    private int number=0; //pawn from 1 ==> 8  // bishop 9 , 10 // rook 11 , 12 //knight 13 , 14 // king 15 // queen 16
 
     public Cell(double width, double height, Paint fill, int x, int y) {
         this.fill = fill;
@@ -46,10 +40,6 @@ public class Cell extends StackPane {
     //get column of the cell
     public int getY() {
         return y;
-    }
-
-    public void setNullImage() {
-        this.image = null;
     }
 
     public void setImage(String image) {
@@ -78,6 +68,39 @@ public class Cell extends StackPane {
     public void setFill(Paint fill) {
         this.fill = fill;
         this.rect.setFill(fill);
+    }
+
+    public void setNonCharacter(){
+        this.number = -1;
+        this.image = null;
+    }
+
+    public Rectangle getRect() {
+        return rect;
+    }
+
+    public void setRect(Rectangle rect) {
+        this.rect = rect;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public char getBcase() {
+        return bcase;
+    }
+
+    public void setBcase(char bcase) {
+        this.bcase = bcase;
+    }
+
+    public boolean hasImage(){
+        return this.image != null;
     }
 
 }

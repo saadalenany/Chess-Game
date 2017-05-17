@@ -5,6 +5,8 @@
  */
 package chess.game;
 
+import chess.game.AI.Checker;
+import static chess.game.AI.MovesLoader.*;
 import chess.game.Controllers.Bishop;
 import chess.game.Controllers.BlackPawn;
 import chess.game.Controllers.King;
@@ -22,7 +24,12 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import static chess.game.ref.*;
 import static chess.game.Modes.*;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 
 /**
  *
@@ -42,6 +49,8 @@ public class Board extends GridPane {
     BlackPawn blackpawn;
 
     Stage popUpStage = null;
+
+    int TWOMODEPLAYER = 0;      //0 ==> player 1 , 1 ==> player 2
 
     public Board() {
         ref.cells = new Cell[8][8];
@@ -111,24 +120,62 @@ public class Board extends GridPane {
         } //if cell threatened to be killed
         else if (cells[x][y].getFill() == killing) {
 
-            //if piece is threatened by another one
-            cells[x][y].setNullImage();                     //throw away it's image
-            cells[x][y].getChildren().remove(1);            //remove image object from the cell pane
-            cells[x][y].setImage(PressedCell.getImage());   //set the killer image on the cell pane
+            if(cells[x][y].getImage().contains("kqueen")){
+                Messager messager = new Messager("You win!");
+            }else if (cells[x][y].getImage().contains("wqueen")){
+                Messager messager = new Messager("You lose!");
+            }else{
+                //if piece is threatened by another one
+                cells[x][y].setNonCharacter();                     //throw away it's image
+                cells[x][y].getChildren().remove(1);            //remove image object from the cell pane
+                cells[x][y].setImage(PressedCell.getImage());   //set the killer image on the cell pane
 
-            PressedCell.setNullImage();                                           //throw away the image
-            cells[PressedCell.getX()][PressedCell.getY()].getChildren().remove(1);//remove image object from the cell pane
+                if(cells[x][y].getImage().contains("pawn")){
+                    NUMBER_OF_PAWNS--;
+                }else if(cells[x][y].getImage().contains("bishop")){
+                    NUMBER_OF_BISHOPS--;
+                }else if(cells[x][y].getImage().contains("rook")){
+                    NUMBER_OF_ROOKS--;
+                }else if(cells[x][y].getImage().contains("knight")){
+                    NUMBER_OF_KNIGHTS--;
+                }
 
-            //do this to all pieces cells with images
-            setCellsBackgroundDefaults();
+                PressedCell.setNonCharacter();                                        //throw away the image
+                cells[PressedCell.getX()][PressedCell.getY()].getChildren().remove(1);//remove image object from the cell pane
+
+                //do this to all pieces cells with images
+                setCellsBackgroundDefaults();
+
+                Checker checker = new Checker();
+//
+//                new Timeline().getKeyFrames().add(new KeyFrame(Duration.millis(200), new EventHandler<ActionEvent>() {
+//                    @Override
+//                    public void handle(ActionEvent event) {
+                        System.err.println("AI turn");
+                        checker.movePiece();
+//                    }
+//                }));
+
+            }
+
         } //if cell is hovered & available for movement
         else if (cells[x][y].getFill() == hover && cells[x][y].getImage() == null) {
             //if cell is hovered for movement
             cells[x][y].setImage(PressedCell.getImage());
-            PressedCell.setNullImage();
+            PressedCell.setNonCharacter();
             cells[PressedCell.getX()][PressedCell.getY()].getChildren().remove(1);
             //do this to all pieces cells with images
             setCellsBackgroundDefaults();
+
+            Checker checker = new Checker();
+
+//            new Timeline().getKeyFrames().add(new KeyFrame(Duration.millis(200), new EventHandler<ActionEvent>() {
+//                @Override
+//                public void handle(ActionEvent event) {
+                    System.err.println("AI turn");
+                    checker.movePiece();
+//                }
+//            }));
         } //if white side chatacter is pressed
         else {
             //here user can only press on white pieces to move them
@@ -210,78 +257,129 @@ public class Board extends GridPane {
         } //if cell threatened to be killed
         else if (cells[x][y].getFill() == killing) {
 
-            //if piece is threatened by another one
-            cells[x][y].setNullImage();                     //throw away it's image
-            cells[x][y].getChildren().remove(1);            //remove image object from the cell pane
-            cells[x][y].setImage(PressedCell.getImage());   //set the killer image on the cell pane
+            if(cells[x][y].getImage().contains("kqueen")){
+                Messager messager = new Messager("White Player wins!");
+            }else if (cells[x][y].getImage().contains("wqueen")){
+                Messager messager = new Messager("Black Player wins!");
+            }else{
+                //if piece is threatened by another one
+                cells[x][y].setNonCharacter();                     //throw away it's image
+                cells[x][y].getChildren().remove(1);            //remove image object from the cell pane
+                cells[x][y].setNumber(PressedCell.getNumber());
+                cells[x][y].setImage(PressedCell.getImage());   //set the killer image on the cell pane
 
-            PressedCell.setNullImage();                                           //throw away the image
-            cells[PressedCell.getX()][PressedCell.getY()].getChildren().remove(1);//remove image object from the cell pane
+                PressedCell.setNonCharacter();                                        //throw away the image
+                cells[PressedCell.getX()][PressedCell.getY()].getChildren().remove(1);//remove image object from the cell pane
 
-            //do this to all pieces cells with images
-            setCellsBackgroundDefaults();
+                //do this to all pieces cells with images
+                setCellsBackgroundDefaults();
+
+                TWOMODEPLAYER = 1 - TWOMODEPLAYER;
+
+            }
+
         } //if cell is hovered & available for movement
         else if (cells[x][y].getFill() == hover && cells[x][y].getImage() == null) {
             //if cell is hovered for movement
             cells[x][y].setImage(PressedCell.getImage());
-            PressedCell.setNullImage();
+            cells[x][y].setNumber(PressedCell.getNumber());
+
+            PressedCell.setNonCharacter();
             cells[PressedCell.getX()][PressedCell.getY()].getChildren().remove(1);
+
             //do this to all pieces cells with images
             setCellsBackgroundDefaults();
+
+            TWOMODEPLAYER = 1 - TWOMODEPLAYER;
+
         } //if white side chatacter is pressed
         else {
             //do this to all pieces cells with images
             setCellsBackgroundDefaults();
-            cells[x][y].setBackgroundColor();
-            //if the piece was a whitepawn
-            if (cells[x][y].getImage().contains("wpawn")) {
-                System.out.println("whitepawn");
-                whitepawn.setWay(x, y);
-            }//if the piece was a blackpawn
-            else if (cells[x][y].getImage().contains("kpawn")) {
-                System.out.println("blackpawn");
-                blackpawn.setWay(x, y);
-            }//if the piece was whiterook
-            else if (cells[x][y].getImage().contains("rook")) {
-                System.out.println("rook");
-                rook.setWay(x, y);
-            }//if the piece was whiteknight
-            else if (cells[x][y].getImage().contains("knight")) {
-                System.out.println("knight");
-                knight.setWay(x, y);
-            }//if the piece was whitebishop
-            else if (cells[x][y].getImage().contains("bishop")) {
-                System.out.println("bishop");
-                bishop.setWay(x, y);
-            }//if the piece was whitequeen
-            else if (cells[x][y].getImage().contains("queen")) {
-                System.out.println("queen");
-                queen.setWay(x, y);
-            }//if the piece was whiteking
-            else if (cells[x][y].getImage().contains("king")) {
-                System.out.println("king");
-                king.setWay(x, y);
+            if(TWOMODEPLAYER == 0){
+                //if the piece was a whitepawn
+                if (cells[x][y].getImage().contains("wpawn")) {
+                    cells[x][y].setBackgroundColor();
+                    whitepawn.setWay(x, y);
+                }
+                //if the piece was whiterook
+                else if (cells[x][y].getImage().contains("wrook")) {
+                    cells[x][y].setBackgroundColor();
+                    rook.setWay(x, y);
+                }//if the piece was whiteknight
+                else if (cells[x][y].getImage().contains("wknight")) {
+                    cells[x][y].setBackgroundColor();
+                    knight.setWay(x, y);
+                }//if the piece was whitebishop
+                else if (cells[x][y].getImage().contains("wbishop")) {
+                    cells[x][y].setBackgroundColor();
+                    bishop.setWay(x, y);
+                }//if the piece was whitequeen
+                else if (cells[x][y].getImage().contains("wqueen")) {
+                    cells[x][y].setBackgroundColor();
+                    queen.setWay(x, y);
+                }//if the piece was whiteking
+                else if (cells[x][y].getImage().contains("wking")) {
+                    cells[x][y].setBackgroundColor();
+                    king.setWay(x, y);
+                }
+            }else if(TWOMODEPLAYER == 1){
+                cells[x][y].setBackgroundColor();
+                //if the piece was a blackpawn
+                if (cells[x][y].getImage().contains("kpawn")) {
+                    cells[x][y].setBackgroundColor();
+                    blackpawn.setWay(x, y);
+                }
+                //if the piece was whiterook
+                else if (cells[x][y].getImage().contains("krook")) {
+                    cells[x][y].setBackgroundColor();
+                    rook.setWay(x, y);
+                }//if the piece was whiteknight
+                else if (cells[x][y].getImage().contains("kknight")) {
+                    cells[x][y].setBackgroundColor();
+                    knight.setWay(x, y);
+                }//if the piece was whitebishop
+                else if (cells[x][y].getImage().contains("kbishop")) {
+                    cells[x][y].setBackgroundColor();
+                    bishop.setWay(x, y);
+                }//if the piece was whitequeen
+                else if (cells[x][y].getImage().contains("kqueen")) {
+                    cells[x][y].setBackgroundColor();
+                    queen.setWay(x, y);
+                }//if the piece was whiteking
+                else if (cells[x][y].getImage().contains("kking")) {
+                    cells[x][y].setBackgroundColor();
+                    king.setWay(x, y);
+                }
             }
             PressedCell = cells[x][y];
         }
-//        }
     }
 
     public void setImages() {
         //set black images on fields
         cells[0][0].setImage("blackrook");
+        cells[0][0].setNumber(11);
         cells[0][7].setImage("blackrook");
+        cells[0][7].setNumber(12);
 
         cells[0][1].setImage("blackknight");
+        cells[0][1].setNumber(13);
         cells[0][6].setImage("blackknight");
+        cells[0][6].setNumber(14);
 
         cells[0][2].setImage("blackbishop");
+        cells[0][2].setNumber(9);
         cells[0][5].setImage("blackbishop");
+        cells[0][5].setNumber(10);
 
         cells[0][3].setImage("blackking");
+        cells[0][3].setNumber(15);
         cells[0][4].setImage("blackqueen");
+        cells[0][4].setNumber(16);
 
         for (int i = 0; i < 8; i++) {
+            cells[1][i].setNumber(i+1);
             cells[1][i].setImage("blackpawn");
         }
 
