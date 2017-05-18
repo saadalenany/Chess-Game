@@ -340,24 +340,18 @@ public class MovesLoader {
                 if (ref.cells[x + 2][y].getImage() == null) {
                     arr.add(new Custom(x + 2, y, 'h',x,y));
                 } else {
-                    System.out.println("There is an image here!");
                 }
             } else {
-                System.out.println("There is an image here!");
             }
 
             if (x - 1 >= 0 && x + 1 <= 7 && y - 1 >= 0 && y + 1 <= 7) {
                 if (ref.cells[x + 1][y - 1].getImage() == null) {
-                    System.out.println("yellow not here!");
                 } else if (ref.cells[x + 1][y - 1].getImage().contains("yellow")) {
-                    System.out.println("yellow here");
                     arr.add(new Custom(x + 1, y - 1, 'k',x,y));
                 }
 
                 if (ref.cells[x + 1][y + 1].getImage() == null) {
-                    System.out.println("yellow not here!");
                 } else if (ref.cells[x + 1][y + 1].getImage().contains("yellow")) {
-                    System.out.println("yellow here");
                     arr.add(new Custom(x + 1, y + 1, 'k',x,y));
                 }
             }
@@ -366,21 +360,16 @@ public class MovesLoader {
             if (ref.cells[x + 1][y].getImage() == null) {
                 arr.add(new Custom(x + 1, y, 'h',x,y));
             } else {
-                System.out.println("There is an image here!");
             }
 
             if (y - 1 >= 0 && y + 1 <= 7) {
                 if (ref.cells[x + 1][y - 1].getImage() == null) {
-                    System.out.println("yellow not here!");
                 } else if (ref.cells[x + 1][y - 1].getImage().contains("yellow")) {
-                    System.out.println("yellow here");
                     arr.add(new Custom(x + 1, y - 1, 'k',x,y));
                 }
 
                 if (ref.cells[x + 1][y + 1].getImage() == null) {
-                    System.out.println("yellow not here!");
                 } else if (ref.cells[x + 1][y + 1].getImage().contains("yellow")) {
-                    System.out.println("yellow here");
                     arr.add(new Custom(x + 1, y + 1, 'k',x,y));
                 }
             }
@@ -397,24 +386,18 @@ public class MovesLoader {
                 if (ref.cells[x - 2][y].getImage() == null) {
                     arr.add(new Custom(x - 2, y, 'h',x,y));
                 } else {
-                    System.out.println("There is an image here!");
                 }
             } else {
-                System.out.println("There is an image here!");
             }
 
             if (x - 1 >= 0 && x + 1 <= 7 && y - 1 >= 0 && y + 1 <= 7) {
                 if(ref.cells[x - 1][y - 1].getImage() == null){
-                    System.out.println("black not here!");
                 }else if (ref.cells[x - 1][y - 1].getImage().contains("black")) {
-                    System.out.println("black here");
                     arr.add(new Custom(x - 1, y - 1, 'k',x,y));
                 }
 
                 if(ref.cells[x - 1][y + 1].getImage() == null){
-                    System.out.println("black not here!");
                 }else if (ref.cells[x - 1][y + 1].getImage().contains("black")) {
-                    System.out.println("black here");
                     arr.add(new Custom(x - 1, y + 1, 'k',x,y));
                 }
             }
@@ -423,21 +406,16 @@ public class MovesLoader {
             if (ref.cells[x - 1][y].getImage() == null) {
                 arr.add(new Custom(x - 1, y, 'h',x,y));
             } else {
-                System.out.println("There is an image here!");
             }
 
             if (y - 1 >= 0 && y + 1 <= 7) {
                 if(ref.cells[x - 1][y - 1].getImage() == null){
-                    System.out.println("black not here!");
                 }else if (ref.cells[x - 1][y - 1].getImage().contains("black")) {
-                    System.out.println("black here");
                     arr.add(new Custom(x - 1, y - 1, 'k',x,y));
                 }
 
                 if(ref.cells[x - 1][y + 1].getImage() == null){
-                    System.out.println("black not here!");
                 }else if (ref.cells[x - 1][y + 1].getImage().contains("black")) {
-                    System.out.println("black here");
                     arr.add(new Custom(x - 1, y + 1, 'h',x,y));
                 }
             }
@@ -455,7 +433,6 @@ public class MovesLoader {
                     arr.add(new Custom(i, y, 'k',x,y));
                     break;
                 } else {
-                    System.out.println("There is an image here!");
                     break;
                 }
             }
@@ -468,7 +445,6 @@ public class MovesLoader {
                     arr.add(new Custom(i, y, 'k',x,y));
                     break;
                 } else {
-                    System.out.println("There is an image here!");
                     break;
                 }
             }
@@ -481,7 +457,6 @@ public class MovesLoader {
                     arr.add(new Custom(x, i, 'k',x,y));
                     break;
                 } else {
-                    System.out.println("There is an image here!");
                     break;
                 }
             }
@@ -494,7 +469,6 @@ public class MovesLoader {
                     arr.add(new Custom(x, i, 'k',x,y));
                     break;
                 } else {
-                    System.out.println("There is an image here!");
                     break;
                 }
             }
@@ -509,7 +483,6 @@ public class MovesLoader {
                 arr.add(new Custom(i, j, 'k',x,y));
                 break;
             } else {
-                System.out.println("There is an image here!");
                 break;
             }
         }
@@ -520,7 +493,6 @@ public class MovesLoader {
                 arr.add(new Custom(i, j, 'k',x,y));
                 break;
             } else {
-                System.out.println("There is an image here!");
                 break;
             }
         }
@@ -531,7 +503,6 @@ public class MovesLoader {
                 arr.add(new Custom(i, j, 'k',x,y));
                 break;
             } else {
-                System.out.println("There is an image here!");
                 break;
             }
         }
@@ -542,7 +513,6 @@ public class MovesLoader {
                 arr.add(new Custom(i, j, 'k',x,y));
                 break;
             } else {
-                System.out.println("There is an image here!");
                 break;
             }
         }
@@ -555,7 +525,6 @@ public class MovesLoader {
         } else if (ref.cells[i][j].getImage().contains(imageTitle)) {
             arr.add(new Custom(i, j, 'k',x,y));
         } else {
-            System.out.println("There is an image here!");
         }
     }
 

@@ -25,6 +25,18 @@ public class Checker {
 
         loadAllAvailableMoves();
 
+        for(int i=0 ; i<Kingavailable.size() ; i++){
+            System.out.println("king availables ==> "+Kingavailable.get(i).getX()+" , "+Kingavailable.get(i).getY());
+        }
+        for(int i=0 ; i<Queenavailable.size() ; i++){
+            System.out.println("king availables ==> "+Queenavailable.get(i).getX()+" , "+Queenavailable.get(i).getY());
+        }
+
+        printAvailables(Pawnavailable,"pawn");
+        printAvailables(Knightavailable,"knight");
+        printAvailables(Bishopavailable,"bishop");
+        printAvailables(Rookavailable,"rook");
+
         //After all available moves were loaded
 
         //strategy play
@@ -126,7 +138,7 @@ public class Checker {
             switch (rand) {
                 case 0:
                     if(Pawnavailable.length > 0){
-                        int pawnrand = (int) (Math.random()*(NUMBER_OF_PAWNS-1));
+                        int pawnrand = (int) (Math.random()*NUMBER_OF_PAWNS);
                         int[] c = getPiece(pawnrand+1 , "pawn");
 
                         if(c[0] == -1 && c[1] == -1){
@@ -147,7 +159,7 @@ public class Checker {
                     // select a knight
                 case 1:
                     if(Knightavailable.length > 0){
-                        int knightrand = (int) (Math.random()*(NUMBER_OF_KNIGHTS-1));
+                        int knightrand = (int) (Math.random()*NUMBER_OF_KNIGHTS);
                         int[] c = getPiece(knightrand+13 , "knight");
 
                         if(c[0] == -1 && c[1] == -1){
@@ -168,7 +180,7 @@ public class Checker {
                     // select a bishop
                 case 2:
                     if(Bishopavailable.length > 0){
-                        int bishoprand = (int) (Math.random()*(NUMBER_OF_BISHOPS-1));
+                        int bishoprand = (int) (Math.random()*NUMBER_OF_BISHOPS);
                         int[] c = getPiece(bishoprand+9 , "bishop");
 
                         if(c[0] == -1 && c[1] == -1){
@@ -189,7 +201,7 @@ public class Checker {
                     // select a rook
                 case 3:
                     if(Rookavailable.length > 0){
-                        int rookrand = (int) (Math.random()*(NUMBER_OF_ROOKS-1));
+                        int rookrand = (int) (Math.random()*NUMBER_OF_ROOKS);
                         int[] c = getPiece(rookrand+11 , "rook");
 
                         if(c[0] == -1 && c[1] == -1){
@@ -294,6 +306,14 @@ public class Checker {
 
             cells[x1][y1].setNonCharacter();                    //throw away the image
             cells[x1][x1].getChildren().remove(1);              //remove image object from the cell pane
+        }
+    }
+
+    private void printAvailables(ArrayList<Custom>[] available, String name) {
+        for(int i=0 ; i<available.length ; i++){
+            for(int j=0 ; j<available[i].size() ; j++){
+                System.out.println(name+" ["+(i+1)+"] ==> "+available[i].get(j).getX()+" , "+available[i].get(j).getY());
+            }
         }
     }
 
